@@ -1,0 +1,21 @@
+<!doctype html><html><meta charset="utf-8"><title>model viewer</title>
+<script type="importmap">{"imports":{"three":"../vendor/three/three.module.js","three/addons/":"../vendor/three/addons/"}}</script>
+<style>html,body{margin:0;background:#333}canvas{width:100vw;height:100vh;display:block}</style>
+<canvas id="c"></canvas>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { RoomEnvironment } from 'three/addons/RoomEnvironment.js';
+const r=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true});
+r.setSize(innerWidth,innerHeight,false); r.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene(); scene.background=new THREE.Color(0x888888);
+const pm=new THREE.PMREMGenerator(r); scene.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+const cam=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.05,50);
+const l=new GLTFLoader(); l.setMeshoptDecoder(MeshoptDecoder);
+const g=await l.loadAsync('../assets/models/'+(new URLSearchParams(location.search).get('f')||'kitchen.glb'));
+scene.add(g.scene); window.G=g; window.T=THREE; window.scene=scene; window.cam=cam; window.r=r;
+window.view=(p,t,fov=50)=>{cam.position.set(...p);cam.lookAt(...t);cam.fov=fov;cam.updateProjectionMatrix();r.render(scene,cam);return 'ok'};
+window.tree=()=>{const out=[];g.scene.updateMatrixWorld(true);function w(o,d){const b=new THREE.Box3().setFromObject(o);out.push('  '.repeat(d)+o.name+(o.isMesh?' [mesh '+(o.material&&o.material.name)+']':'')+' '+b.min.toArray().map(v=>v.toFixed(2))+' → '+b.max.toArray().map(v=>v.toFixed(2)));if(d<4)o.children.forEach(c=>w(c,d+1));}w(g.scene,0);return out.join('\n')};
+view([0,1.5,5],[0,1.2,-3]); document.title='ready';
+</script></html>

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nameštaj po meri 034 — Nameštaj po meri tvog doma</title>
+<meta name="description" content="Nameštaj po meri od pločastih materijala: kuhinje, plakari, TV elementi i toaletni stolovi. Pošaljite upit sa idejom, dimenzijama ili fotografijom prostora.">
+<meta name="theme-color" content="#f3f0e8">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&family=Barlow:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="css/site.css">
+<script type="importmap">{"imports":{"three":"./vendor/three/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+<script>document.documentElement.className='js'</script>
+</head>
+<body>
+<a class="skip" href="#sadrzaj">Preskoči na sadržaj</a>
+
+<header class="hdr" id="hdr">
+  <a class="hdr__logo" href="#pocetak" aria-label="Nameštaj po meri 034 — početak">
+    <img class="logo-d" src="assets/logo/logo-horizontal.svg" alt="Nameštaj po meri 034" width="184" height="48">
+    <img class="logo-l" src="assets/logo/logo-horizontal-light.svg" alt="" width="184" height="48">
+  </a>
+  <div class="hdr__r">
+    <a class="btn btn--line hdr__cta" href="#kontakt"><span>Pošaljite upit</span></a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span class="menu-btn__t">Meni</span><i aria-hidden="true"></i></button>
+  </div>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav class="menu__nav" id="nav" aria-label="Glavna navigacija"></nav>
+  <div class="menu__foot">
+    <p class="lab">[ Nameštaj po meri tvog doma ]</p>
+    <a class="ul" href="https://www.instagram.com/namestajpomeri034/" target="_blank" rel="noopener">@namestajpomeri034</a>
+  </div>
+</div>
+
+<main id="sadrzaj">
+  <!-- ============ HERO + 3D ============ -->
+  <section class="hero" id="pocetak" data-theme="dark" aria-label="Kuhinja nastaje dok skrolujete">
+    <div class="hero__pin" id="pin">
+      <div class="hero__stage" id="stage">
+        <canvas class="hero__canvas" id="canvas" aria-hidden="true"></canvas>
+        <img class="hero__fallback" id="fallback" src="assets/img/fallback-kitchen.jpg" alt="Ilustracija završene kuhinje po meri (3D prikaz)" hidden>
+        <div class="hero__scrim" aria-hidden="true"></div>
+      </div>
+      <div class="dims" id="dims" aria-hidden="true"></div>
+
+      <div class="cap cap--big" data-stage="1">
+        <p class="lab">[ 01 — Prazan prostor ]</p>
+        <h1 class="cap__h split">Vaš prostor.<br>Vaša mera.</h1>
+        <p class="cap__p">Nameštaj osmišljen da se uklopi u vaš dom i način života.</p>
+        <div class="cap__btns">
+          <a class="btn btn--light" href="#radovi"><span>Pogledajte radove</span></a>
+          <a class="btn btn--line-l" href="#kontakt"><span>Pošaljite upit</span></a>
+        </div>
+        <p class="cue"><span class="cue__line"></span>Skrolujte i pogledajte kako nastaje.</p>
+      </div>
+      <p class="cap cap--s" data-stage="2"><span class="lab">[ 02 — Mere i temelj ]</span><span class="cap__c">Svaki centimetar ima svoju svrhu.</span></p>
+      <p class="cap cap--s" data-stage="3"><span class="lab">[ 03 — Korpusi i frontovi ]</span><span class="cap__c">Od prve mere do poslednjeg detalja.</span></p>
+      <p class="cap cap--s" data-stage="4"><span class="lab">[ 04 — Materijali i gornji elementi ]</span><span class="cap__c">Materijali koji daju karakter prostoru.</span></p>
+      <p class="cap cap--s" data-stage="5"><span class="lab">[ 05 — Ostrvo i svetlo ]</span><span class="cap__c">Funkcionalnost koja se vidi. Kvalitet koji se oseća.</span></p>
+      <div class="cap cap--big cap--end" data-stage="6">
+        <p class="lab">[ 06 — Završen prostor ]</p>
+        <h2 class="cap__h">Po vašoj meri.<br>Do detalja.</h2>
+        <div class="cap__btns">
+          <a class="btn btn--light" href="#kontakt"><span>Pošaljite upit</span></a>
+          <a class="btn btn--line-l" href="#radovi"><span>Pogledajte radove</span></a>
+        </div>
+      </div>
+
+      <ol class="steps" id="steps" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li><li></li></ol>
+      <p class="demo-note">3D prikaz je ilustracija, nije realizovan projekat.</p>
+    </div>
+  </section>
+
+  <!-- ============ UVOD ============ -->
+  <section class="sec intro" id="o-nama" data-theme="light" aria-labelledby="intro-h">
+    <div class="wrap">
+      <p class="lab">[ O nama ]</p>
+      <h2 class="h-xl split" id="intro-h">Nameštaj po meri tvog doma.</h2>
+      <p class="scrub" id="introText"></p>
+      <p class="scrub scrub--sub" id="introText2">Kuhinje, plakari, TV elementi i toaletni stolovi — svaki element se prilagođava prostoru, dimenzijama i načinu života. Pošaljite ideju, okvirne mere ili fotografiju prostora, a mi predlažemo rešenje i materijale.</p>
+      <a class="btn btn--dark" href="#kontakt"><span>Pošaljite upit</span></a>
+    </div>
+  </section>
+
+  <!-- ============ PONUDA ============ -->
+  <section class="sec offer" id="ponuda" data-theme="light" aria-labelledby="ponuda-h">
+    <div class="wrap">
+      <p class="lab">[ Ponuda ]</p>
+      <h2 class="h-xl split" id="ponuda-h">Šta izrađujemo.</h2>
+    </div>
+    <ul class="offer__list wrap" id="services"></ul>
+  </section>
+
+  <!-- ============ NAŠI RADOVI ============ -->
+  <section class="sec band" id="radovi" data-theme="dark" aria-labelledby="radovi-h">
+    <div class="wrap">
+      <p class="lab">[ Naši radovi ]</p>
+      <h2 class="h-xl split" id="radovi-h">Kuhinja koja nastaje<br>po vašoj meri.</h2>
+    </div>
+    <div class="expand" id="expand">
+      <figure class="expand__fig">
+        <button class="expand__btn" type="button" id="expandBtn" aria-label="Uvećaj ilustraciju kuhinje">
+          <img src="assets/img/ill-kuhinja.jpg" alt="Ilustracija: kuhinja u obliku slova U sa ostrvom, 3D prikaz" loading="lazy" data-fallback>
+        </button>
+        <span class="badge">Ilustracija · 3D prikaz — nije naš realizovan projekat</span>
+      </figure>
+    </div>
+    <dl class="meta wrap">
+      <div><dt class="lab">Prikaz</dt><dd>Kuhinja u obliku slova U sa ostrvom</dd></div>
+      <div><dt class="lab">Vrsta</dt><dd>3D ilustracija — koncept</dd></div>
+      <div><dt class="lab">Model</dt><dd>„Modern Kitchen“, Visthétique · CC BY 4.0</dd></div>
+    </dl>
+    <div class="wrap band__btns">
+      <a class="btn btn--light" href="#kontakt"><span>Pošaljite upit</span></a>
+      <a class="btn btn--line-l" href="#pocetak"><span>Pogledajte montažu ponovo</span></a>
+    </div>
+  </section>
+
+  <section class="strip" id="galerija" data-theme="light" aria-labelledby="strip-h">
+    <div class="strip__pin">
+      <div class="strip__head wrap">
+        <p class="lab">[ Realizovani radovi ]</p>
+        <h2 class="h-l split" id="strip-h">Naši projekti.</h2>
+        <p class="lead" id="radoviLead"></p>
+        <div class="filters" id="filters" role="group" aria-label="Kategorije"></div>
+      </div>
+      <div class="strip__view"><div class="strip__track gallery" id="gallery"></div></div>
+    </div>
+  </section>
+
+  <!-- ============ MATERIJALI ============ -->
+  <section class="sec mats-sec" id="materijali" data-theme="light" aria-labelledby="mat-h">
+    <div class="wrap">
+      <p class="lab">[ Materijali i detalji ]</p>
+      <h2 class="h-xl split" id="mat-h">Detalji koji se vide<br>i osećaju.</h2>
+      <p class="lead">Ilustrativni prikazi iz 3D modela — ne prikazuju realizovane radove. Konkretne materijale i okov potvrđujemo u ponudi.</p>
+    </div>
+    <div class="collage wrap--wide" id="mats"></div>
+  </section>
+
+  <!-- ============ KAKO RADIMO ============ -->
+  <section class="sec proc" id="kako-radimo" data-theme="dark" aria-labelledby="kako-h">
+    <div class="wrap proc__in">
+      <div class="proc__head">
+        <p class="lab">[ Kako radimo ]</p>
+        <h2 class="h-xl split" id="kako-h">Od ideje do montaže.</h2>
+        <p class="lead">Predlog procesa — potvrđuje se sa vlasnikom.</p>
+        <div class="proc__bar" aria-hidden="true"><i id="procBar"></i></div>
+      </div>
+      <ol class="proc__list" id="process"></ol>
+    </div>
+  </section>
+
+  <!-- ============ KONTAKT ============ -->
+  <section class="sec contact-sec" id="kontakt" data-theme="light" aria-labelledby="kontakt-h">
+    <div class="wrap">
+      <p class="lab">[ Kontakt ]</p>
+      <h2 class="h-xxl split" id="kontakt-h">Hajde da osmislimo<br>vaš prostor.</h2>
+    </div>
+    <div class="wrap contact">
+      <div class="contact__txt">
+        <p class="lead">Pošaljite nam ideju, okvirne dimenzije ili fotografiju prostora.</p>
+        <ul class="clist" id="clist"></ul>
+      </div>
+      <form class="form" id="form" novalidate>
+        <div class="field"><label for="f-ime">Ime</label><input id="f-ime" name="ime" autocomplete="name" required><span class="err" data-for="ime"></span></div>
+        <div class="field"><label for="f-tel">Telefon</label><input id="f-tel" name="telefon" type="tel" autocomplete="tel" required><span class="err" data-for="telefon"></span></div>
+        <div class="field"><label for="f-mail">Email <small>(opciono)</small></label><input id="f-mail" name="email" type="email" autocomplete="email"><span class="err" data-for="email"></span></div>
+        <div class="field"><label for="f-vrsta">Vrsta nameštaja</label><select id="f-vrsta" name="vrsta" required></select><span class="err" data-for="vrsta"></span></div>
+        <div class="field field--full"><label for="f-poruka">Poruka</label><textarea id="f-poruka" name="poruka" rows="4" required></textarea><span class="err" data-for="poruka"></span></div>
+        <div class="form__actions"><button class="btn btn--dark btn--lg" type="submit"><span>Pošaljite upit</span></button></div>
+        <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="ftr" data-theme="dark">
+  <div class="wrap ftr__in">
+    <div class="ftr__brand"><img src="assets/logo/logo-horizontal-light.svg" alt="Nameštaj po meri 034" width="200" height="52"><p id="ftrDesc"></p></div>
+    <nav aria-label="Podnožje" id="ftrNav"></nav>
+    <ul class="clist clist--light" id="ftrContact"></ul>
+  </div>
+  <p class="ftr__big" aria-hidden="true">Nameštaj po meri</p>
+  <div class="wrap ftr__bar">
+    <span>© <span id="yr"></span> Nameštaj po meri 034</span>
+    <span>Logo je predlog vizuelnog identiteta, nije postojeći logotip firme.</span>
+    <span>3D model: „<a href="https://sketchfab.com/3d-models/modern-kitchen-82c35500aec347d2938ff7943900486f" target="_blank" rel="noopener">Modern Kitchen</a>“ — <a href="https://sketchfab.com/visthetique" target="_blank" rel="noopener">Visthétique</a>, <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>; optimizovan za web. Ilustracija, nije realizovan projekat.</span>
+  </div>
+</footer>
+
+<dialog class="lb" id="lb" aria-label="Pregled fotografije"><button class="lb__x" id="lbx" aria-label="Zatvori">×</button><img id="lbimg" alt=""><p id="lbcap"></p></dialog>
+
+<!-- preloader: stubovi se podižu kada je scena spremna -->
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <div class="pillars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="loader__c">
+    <img src="assets/logo/logo-compact.svg" alt="" width="120" height="104">
+    <div class="loader__bar"><i id="loaderBar"></i></div>
+    <p id="loaderTxt">Pripremam prostor…</p>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

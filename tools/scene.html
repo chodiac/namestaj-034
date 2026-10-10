@@ -1,0 +1,14 @@
+<!doctype html><html lang="sr-Latn"><meta charset="utf-8"><title>scene harness</title>
+<script type="importmap">{"imports":{"three":"../vendor/three/three.module.js","three/addons/":"../vendor/three/addons/"}}</script>
+<style>html,body{margin:0;height:100%;background:#222}#w{position:fixed;inset:0}canvas{width:100%;height:100%;display:block}#hud{position:fixed;left:8px;top:8px;color:#fff;font:12px monospace;background:#0008;padding:4px 8px}</style>
+<div id="w"><canvas id="c"></canvas></div><div id="hud">učitavam…</div>
+<script type="module">
+import { createEngine } from '../js/scene/engine.js';
+const hud=document.getElementById('hud');
+try{
+const e = await createEngine({ canvas: document.getElementById('c'), onProgress:(p,l)=>hud.textContent=Math.round(p*100)+'% '+l });
+window.__e = e;
+const q=new URLSearchParams(location.search); e.jump(parseFloat(q.get('p')||'1')); e.renderNow();
+hud.textContent='P='+e.progress.toFixed(3);
+}catch(err){hud.textContent='ERR '+err.message; console.error(err)}
+</script></html>

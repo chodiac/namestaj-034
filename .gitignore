@@ -1,0 +1,24 @@
+# Originalni preuzeti 3D fajlovi (575 MB, prelaze GitHub limit od 100 MB) — u repou je samo optimizovan assets/models/*.glb
+3D Model Kitchen/
+
+# Tajne i lokalna podešavanja
+.env
+.env.*
+*.pem
+*.key
+secrets*
+
+# Sistem / editor / alati
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+.claude/
+__pycache__/
+*.pyc
+*.log
+node_modules/
+
+# Privremeni dev snimci
+assets/img/t-*.jpg
