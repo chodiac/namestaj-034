@@ -10,7 +10,7 @@ python tools/serve.py 5200
 ```
 Otvorite http://localhost:5200. Zahteva samo Python 3. (Ne otvarati `index.html` direktno iz fajl-sistema — ES moduli traže HTTP.)
 
-Dev zastavice u URL-u: `?motion=full` (ignoriše reduced-motion), `?motion=reduce` (završen prostor bez skrola), `?webgl=0` (statični fallback).
+Dev zastavice u URL-u: pokret je podrazumevano uključen (ne prati sistemsko „smanji pokret“); `?motion=reduce` daje završen prostor bez animacija, `?webgl=0` (statični fallback).
 
 ## Deploy
 Ceo folder je statičan — otpremite ga na bilo koji statički hosting (GitHub Pages, Netlify, Cloudflare Pages, običan hosting). Sve putanje su relativne. `tools/` može da se izostavi (`tools/serve.py` ima dev-only `/__save`; ne pokretati na produkciji).

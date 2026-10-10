@@ -320,10 +320,10 @@ ul,ol{padding:0;list-style:none}
   .ftr__bar{grid-template-columns:1fr}
   .hero__stage{clip-path:inset(18% 10% 16% 10% round 10px)}
 }
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .rv,.wi{transform:none;opacity:1;transition:none}.cue__line::after{animation:none}
-  .mat__m{clip-path:none}
-  .hero__stage{clip-path:none;transition:none}
-  .sw{opacity:1}
-}
+/* Pokret je podrazumevano uključen; isključuje se samo sa ?motion=reduce (klasa .reduce na <html>) */
+html.reduce{scroll-behavior:auto}
+.reduce .rv,.reduce .wi{transform:none;opacity:1;transition:none}
+.reduce .cue__line::after{animation:none}
+.reduce .mat__m{clip-path:none}
+.reduce .hero__stage{clip-path:none;transition:none}
+.reduce .sw{opacity:1}

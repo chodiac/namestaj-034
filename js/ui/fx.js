@@ -1,7 +1,7 @@
 /* Skrol efekti i otkrivanja. Sve je vezano za jednu rAF petlju na scroll-u; bez biblioteka. */
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduce = document.documentElement.classList.contains('reduce');
 
 /* ---------- reči u maskama (naslovi) ---------- */
 export function splitWords(el, cls = 'wi') {

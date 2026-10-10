@@ -141,9 +141,8 @@ function revealPage() {
 
 async function initHero() {
   const hero = $('#pocetak');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const params = new URLSearchParams(location.search);
-  const forceStatic = params.get('motion') === 'reduce' || (reduce && params.get('motion') !== 'full');
+  const forceStatic = params.get('motion') === 'reduce';
   const showStatic = (why) => {
     hero.classList.add('is-static');
     $('#fallback').hidden = false; $('#canvas').hidden = true;
