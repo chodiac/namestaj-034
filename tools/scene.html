@@ -6,7 +6,7 @@
 import { createEngine } from '../js/scene/engine.js';
 const hud=document.getElementById('hud');
 try{
-const e = await createEngine({ canvas: document.getElementById('c'), onProgress:(p,l)=>hud.textContent=Math.round(p*100)+'% '+l });
+const q0=new URLSearchParams(location.search); const e = await createEngine({ canvas: document.getElementById('c'), tierName: q0.get('tier')||'high', onProgress:(p,l)=>hud.textContent=Math.round(p*100)+'% '+l, onFail:(w)=>{hud.textContent='FAIL '+w}, onTier:(t)=>console.log('tier',t) });
 window.__e = e;
 const q=new URLSearchParams(location.search); e.jump(parseFloat(q.get('p')||'1')); e.renderNow();
 hud.textContent='P='+e.progress.toFixed(3);

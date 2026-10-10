@@ -92,11 +92,17 @@ export const stagesTiming = {
   light: [0.76, 0.86],
 };
 
-/* Model kuhinje (GLB, optimizovan gltfpack-om). */
+/* Modeli kuhinje (GLB, gltfpack: meshopt + WebP) po nivou kvaliteta:
+   high ≈ 654k trouglova / 2048 tekstura · mid ≈ 267k / 1024 · low ≈ 80k / 512 */
 export const model = {
-  desktop: 'assets/models/kitchen-hd.glb',
-  mobile: 'assets/models/kitchen-sd.glb',
+  high: 'assets/models/kitchen-hd.glb',
+  mid: 'assets/models/kitchen-mid.glb',
+  low: 'assets/models/kitchen-low.glb',
 };
+
+/* Poster kadrovi scene (renderi iste scene) — odmah vidljiv sadržaj i statični fallback bez 3D-a.
+   Fajlovi: assets/posters/{l|p}-{indeks}.jpg (l = landscape, p = portret). */
+export const posters = { frames: [0, 0.33, 0.5, 0.62, 0.72, 0.85, 1], dir: 'assets/posters/' };
 
 export const quality = {
   maxDpr: 2, maxDprMobile: 1.5,

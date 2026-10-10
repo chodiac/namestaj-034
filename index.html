@@ -40,8 +40,10 @@
   <section class="hero" id="pocetak" data-theme="dark" aria-label="Kuhinja nastaje dok skrolujete">
     <div class="hero__pin" id="pin">
       <div class="hero__stage" id="stage">
+        <div class="posters" id="posters" role="img" aria-label="Ilustracija kuhinje po meri (3D prikaz) koja nastaje dok skrolujete">
+          <picture><source media="(max-aspect-ratio: 1/1)" srcset="assets/posters/p-0.jpg"><img class="poster" data-i="0" src="assets/posters/l-0.jpg" alt="" width="1280" height="720" fetchpriority="high" decoding="async"></picture>
+        </div>
         <canvas class="hero__canvas" id="canvas" aria-hidden="true"></canvas>
-        <img class="hero__fallback" id="fallback" src="assets/img/fallback-kitchen.jpg" alt="Ilustracija završene kuhinje po meri (3D prikaz)" hidden>
         <div class="hero__scrim" aria-hidden="true"></div>
       </div>
       <div class="dims" id="dims" aria-hidden="true"></div>
@@ -70,6 +72,7 @@
       </div>
 
       <ol class="steps" id="steps" aria-hidden="true"><li></li><li></li><li></li><li></li><li></li><li></li></ol>
+      <p class="hero__status" id="status" role="status" hidden></p>
       <p class="demo-note">3D prikaz je ilustracija, nije realizovan projekat.</p>
     </div>
   </section>

@@ -1,5 +1,6 @@
 import { business, inquiry, nav, stages, services, portfolio, portfolioPlaceholders, materials, process } from '../config/site.js';
-import { initFx, initMenu, initAccordion, splitWords } from './ui/fx.js';
+import { initFx, initMenu, initAccordion } from './ui/fx.js';
+import { initHero } from './hero.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
@@ -80,7 +81,7 @@ function buildGallery() {
     const b = e.target.closest('.g__box[data-i]'); if (!b) return;
     const it = portfolio[+b.dataset.i]; show(it.src, it.alt || it.title, it.title, b);
   });
-  $('#expandBtn').addEventListener('click', (e) => show('assets/img/fallback-kitchen.jpg', 'Ilustracija: kuhinja u obliku slova U sa ostrvom, 3D prikaz', 'Ilustracija · 3D prikaz — nije naš realizovan projekat', e.currentTarget));
+  $('#expandBtn').addEventListener('click', (e) => show('assets/posters/l-6.jpg', 'Ilustracija: kuhinja u obliku slova U sa ostrvom, 3D prikaz', 'Ilustracija · 3D prikaz — nije naš realizovan projekat', e.currentTarget));
   const close = () => { lb.close(); opener && opener.focus(); };
   $('#lbx').addEventListener('click', close);
   lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
@@ -130,89 +131,22 @@ function initForm() {
   });
 }
 
-/* ------------------------------------- 3D hero ------------------------------------- */
-const loader = $('#loader'), bar = $('#loaderBar'), txt = $('#loaderTxt');
+/* ------------------------------------- hero: poster → 3D ------------------------------------- */
+const loader = $('#loader');
 function revealPage() {
+  if (document.body.classList.contains('ready')) return;
   document.body.classList.add('ready');
-  window.__fx?.refresh();
   loader.classList.add('done');
+  window.__fx?.refresh();
   setTimeout(() => $('.cap[data-stage="1"] .cap__h')?.classList.add('in'), 900);
+  $('#stage')?.addEventListener('transitionend', () => $('#stage').classList.add('open'), { once: true });
 }
-
-async function initHero() {
-  const hero = $('#pocetak');
-  const params = new URLSearchParams(location.search);
-  const forceStatic = params.get('motion') === 'reduce';
-  const showStatic = (why) => {
-    hero.classList.add('is-static');
-    $('#fallback').hidden = false; $('#canvas').hidden = true;
-    revealPage(); console.info('hero static:', why);
-  };
-  const eng = await import('./scene/engine.js');
-  if (params.get('webgl') === '0' || !eng.webglAvailable()) return showStatic('no webgl');
-
-  const caps = [...document.querySelectorAll('.cap')].map((c) => ({ node: c, st: stages.find((s) => s.id === +c.dataset.stage) }));
-  const steps = [...document.querySelectorAll('#steps li')];
-  const dimsHost = $('#dims');
-  let dimEls = [];
-
-  let engine;
-  try {
-    engine = await eng.createEngine({
-      canvas: $('#canvas'),
-      onProgress: (p, label) => { bar.style.width = Math.round(p * 100) + '%'; txt.textContent = label + '…'; },
-      onFrame: ({ project, mi, mo, P }) => {
-        paintCaptions(P);
-        dimEls.forEach((d, i) => {
-          const k = engine.S.measure.labelState(i, mi, mo);
-          if (k <= 0.01) { d.node.style.opacity = 0; return; }
-          const s = project(d.pos);
-          d.node.style.opacity = k; d.node.style.transform = `translate(${s.x}px,${s.y}px) translate(-50%,-50%)`;
-        });
-      },
-    });
-  } catch (e) { console.error(e); return showStatic('engine failed'); }
-  window.__scene = engine;
-
-  dimEls = engine.S.measure.labels.map((l) => {
-    const node = el('span', { class: 'dim' }, l.text); dimsHost.appendChild(node); return { node, pos: l.pos };
-  });
-
-  function paintCaptions(P) {
-    let active = -1;
-    for (const { node, st } of caps) {
-      const fi = 0.018, fo = st.id === 6 ? 0 : 0.016;
-      const out = fo ? sm(st.end - fo, st.end, P) : 0;
-      const a = sm(st.start, st.start + fi, P) * (1 - out);
-      const v = st.id === 1 ? 1 - out : a;
-      node.style.opacity = v.toFixed(3);
-      node.style.visibility = v > 0.01 ? 'visible' : 'hidden';
-      node.style.transform = `translateY(${((1 - v) * 22).toFixed(1)}px)`;
-      node.style.pointerEvents = v > 0.5 ? 'auto' : 'none';
-      if (v > 0.5) active = st.id - 1;
-    }
-    steps.forEach((s, i) => s.classList.toggle('on', i === active));
-  }
-
-  const progress = () => {
-    const r = hero.getBoundingClientRect(), len = hero.offsetHeight - innerHeight;
-    return len > 0 ? clamp01(-r.top / len) : 1;
-  };
-  if (forceStatic) {
-    engine.jump(1); hero.classList.add('is-static'); revealPage();
-    caps.forEach(({ node, st }) => { node.style.opacity = st.id === 6 ? 1 : 0; node.style.visibility = st.id === 6 ? 'visible' : 'hidden'; node.style.transform = 'none'; });
-    return;
-  }
-  engine.jump(progress());
-  addEventListener('load', () => engine.jump(progress()));
-  addEventListener('pageshow', () => engine.jump(progress()));
-  let ticking = false;
-  const onScroll = () => { if (ticking) return; ticking = true; requestAnimationFrame(() => { ticking = false; engine.setTarget(progress()); }); };
-  addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', () => { engine.jump(progress()); });
-  new IntersectionObserver((es) => engine.setActive(es[0].isIntersecting), { rootMargin: '200px' }).observe(hero);
-  document.addEventListener('visibilitychange', () => engine.setActive(!document.hidden));
-  revealPage();
+/* poster učitan → stranica se otkriva odmah (ne čeka 3D) */
+{
+  const first = $('#posters img');
+  if (first.complete) revealPage();
+  else { first.addEventListener('load', revealPage, { once: true }); first.addEventListener('error', revealPage, { once: true }); }
+  setTimeout(revealPage, 2500);
 }
 
 buildContent();

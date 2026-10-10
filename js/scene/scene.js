@@ -17,14 +17,17 @@ const NODE_CAT = {
 };
 const SHELL = new Set(['Walls', 'Skirting_Board']);
 
-export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = () => {} }) {
+const yieldMain = () => (globalThis.scheduler?.yield ? scheduler.yield() : new Promise((r) => setTimeout(r, 0)));
+
+export async function buildScene({ url, aniso, tier, onProgress = () => {} }) {
+  const shadowSize = tier.shadow, fadeOn = tier.fade;
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xd9d3c8);
 
   /* ---------- učitavanje ---------- */
   const gltf = await loadGLB(url, (p) => onProgress(p * 0.8));
   onProgress(0.82);
-  await new Promise((r) => setTimeout(r, 0));
+  await yieldMain();
   gltf.scene.updateMatrixWorld(true);
   const rootNode = gltf.scene.getObjectByName('RootNode') || gltf.scene;
 
@@ -35,7 +38,7 @@ export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = 
   const shell = new THREE.Group(); shell.name = 'shell'; scene.add(shell);
   const add = (cat, group, sort, opts = {}) => {
     root.add(group);
-    const p = new Piece(group, { t0: 0, t1: 1, ...opts });
+    const p = new Piece(group, { t0: 0, t1: 1, fade: fadeOn ? 0.2 : 0, ...opts });
     p.cat = cat; p.sort = sort;
     (byCat[cat] ||= []).push(p); all.push(p);
     return p;
@@ -45,6 +48,7 @@ export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = 
     if (m.normalMap) m.normalMap.anisotropy = aniso;
     if (m.roughnessMap) m.roughnessMap.anisotropy = aniso;
     m.envMapIntensity = 0.9;
+    if (!tier.normals && m.normalMap) { m.normalMap = null; m.needsUpdate = true; }   // slab uređaj: bez normal mapa (manje memorije i uzoraka)
     if (m.transparent || m.alphaTest > 0 || m.opacity < 1) m.userData.noFade = true;
   };
 
@@ -56,7 +60,7 @@ export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = 
   const cells = new Map();          // ključ ćelije → { cat, parts:[{geo,mat}], sort }
   let step = 0;
   for (const mesh of meshes) {
-    if (++step % 12 === 0) { onProgress(0.82 + 0.16 * (step / meshes.length)); await new Promise((r) => setTimeout(r, 0)); }
+    if (++step % 4 === 0) { onProgress(0.82 + 0.16 * (step / meshes.length)); await yieldMain(); }
     const top = topOf(mesh);
     const mat = mesh.material;
     prep(mat);
@@ -64,7 +68,7 @@ export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = 
 
     if (SHELL.has(top)) {
       const m = new THREE.Mesh(geo, mat);
-      m.receiveShadow = true; m.castShadow = top === 'Walls';
+      m.receiveShadow = shadowSize > 0; m.castShadow = shadowSize > 0 && top === 'Walls';
       m.userData.shell = top;
       shell.add(m);
       if (top === 'Walls' && !/Floor/i.test(mat.name)) shellMats.push(mat);
@@ -82,7 +86,7 @@ export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = 
           else if (mat.name === 'Chrome') sub = 'handle';
           else sub = upper ? 'upper' : (c.cy < 1.15 && c.cx < -2.3 ? 'tallside' : 'base');
         }
-        const key = [top, mat.name, sub, Math.round(c.cx / 0.6), Math.round(c.cz / 0.8)].join('|');
+        const key = [top, mat.name, sub, Math.round(c.cx / (0.6 * (tier.cell || 1))), Math.round(c.cz / (0.8 * (tier.cell || 1)))].join('|');
         let cell = cells.get(key);
         if (!cell) { cell = { cat: sub, mat, tris: [], geo, cx: 0, cz: 0, n: 0 }; cells.set(key, cell); }
         cell.tris.push(...c.tris);
@@ -101,7 +105,7 @@ export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = 
   const meshFor = (geo, mat, cat) => {
     const m = new THREE.Mesh(geo, mat);
     const glass = mat.transparent;
-    m.castShadow = !glass && cat !== 'lights'; m.receiveShadow = !glass;
+    m.castShadow = shadowSize > 0 && !glass && cat !== 'lights'; m.receiveShadow = shadowSize > 0 && !glass;
     return m;
   };
   // putanja U-oblika: leva strana (spreda→nazad), zadnji zid (levo→desno), desna strana (nazad→spreda)
@@ -162,10 +166,11 @@ export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = 
 
   /* ---------- svetlo i merenje ---------- */
   const LM = createLightMaterials();
-  const lights = createLights(scene, LM, { shadowSize, room: ROOM });
+  const lights = createLights(scene, LM, { shadowSize, room: ROOM, mode: tier.lights });
   // emisivni materijali iz modela (ugradni spotovi) prate paljenje
   const emissives = [];
-  all.forEach((p) => p.mats.forEach((m) => { if (m.emissiveIntensity > 0 && m.emissive && m.emissive.getHex() !== 0) emissives.push({ m, base: m.emissiveIntensity }); }));
+  const seenEm = new Set();
+  all.forEach((p) => p.obj.traverse((o) => { const m = o.isMesh && o.material; if (m && !seenEm.has(m) && m.emissiveIntensity > 0 && m.emissive && m.emissive.getHex() !== 0) { seenEm.add(m); emissives.push({ m, base: m.emissiveIntensity }); } }));
   const measure = buildMeasure(ROOM);
   scene.add(measure.group);
 
@@ -189,7 +194,7 @@ export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = 
   };
   for (const [cat, c] of Object.entries(cfg)) {
     const list = sorted(cat);
-    list.forEach((p) => { p.from = c.from; p.rot = c.rot; if (c.fade) p.fade = c.fade; });
+    list.forEach((p) => { p.from = c.from; p.rot = c.rot; if (c.fade && fadeOn) p.fade = c.fade; });
     stagger(list, c.w[0], c.w[1], c.dur);
   }
   // "ostrvo" je i kamena ploča: isti prozor, ali slojevi po redu
@@ -220,6 +225,9 @@ export async function buildScene({ url, aniso, shadowSize, mobile, onProgress = 
     return { fov: c.fov, pos: v(c.start.pos).lerp(v(c.end.pos), e), look: v(c.start.look).lerp(v(c.end.look), e) };
   }
 
+  // oslobodi originalne glTF geometrije (već su ispečene u nove) i dekodirane slike
+  gltf.scene.traverse((o) => { if (o.isMesh) o.geometry.dispose(); });
+  gltf.scene.clear();
   onProgress(1);
   return { scene, update, cameraAt, measure, lights, all, T: TT, get lastP() { return lastP; }, byCat };
 }

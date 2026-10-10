@@ -21,7 +21,7 @@ export class Piece {
     this.mats = [];      // klonirani materijali sa alphaHash
     this.extra = [];     // {mat, max} materijali koji prate pojavljivanje (kontaktne senke)
     this._lp = -1;
-    this._prepare();
+    if (this.fade > 0) this._prepare();   // bez kloniranja materijala kad nema fade-a (štedi memoriju i draw state)
   }
 
   _prepare() {

@@ -55,3 +55,6 @@ amestaj-034" /E`.
 
 Ideje sa reference prilagođene nameštaju: preloader sa vertikalnim stubovima; hero kadar koji se otvara iz manjeg pravougaonika; krupan serif (Instrument Serif) + kondenzovane verzalne oznake u zagradama (Barlow Condensed); tekst koji se puni reč po reč dok skroluješ; naslovi u maskama; meni preko celog ekrana; pune boje po sekcijama (škriljac iz modela, orah); fotografija koja se širi iz kadra u ceo ekran; pinovana horizontalna traka radova; asimetričan kolaž sa paralaksom i maskama; proces sa sticky naslovom i koracima koji se pale; dugmad sa popunom koja se podiže. Nisu preuzeti: njihove fotografije, projekti, brojke, nagrade ni tekstovi.
 Efekti su u `js/ui/fx.js` (bez biblioteka, jedna scroll petlja); stilovi u `css/site.css`.
+
+## Performanse (3D)
+Poster kadrovi odmah, 3D se učitava naknadno i prilagođava uređaju (nivoi high/mid/low/poster, merenja, spuštanje kvaliteta, potpuno oslobađanje resursa). Detalji, merenja pre/posle i šta da proveriš na telefonu: `docs/PERF.md`. Dev parametri: `?tier=high|mid|low|poster`, `?now=1`, `?budget=N`.
