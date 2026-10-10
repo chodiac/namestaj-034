@@ -75,9 +75,10 @@ export const camera = {
     end:   { pos: [-0.3, 1.6, 3.7], look: [-0.3, 1.2, -3.0] },
   },
   mobile: {
-    fov: 46,
-    start: { pos: [-0.5, 1.6, 7.0], look: [-0.5, 1.2, -3.0] },
-    end:   { pos: [0.2, 1.5, 6.0], look: [0.2, 1.15, -3.0] },
+    // portret: cela kuhinja (≈6 m) mora da stane u širinu, pa je kamera daleko sa širim vertikalnim vidnim poljem
+    fov: 62,
+    start: { pos: [-0.2, 5.6, 11.0], look: [-0.2, 0.55, -1.3] },
+    end:   { pos: [-0.2, 5.2, 10.4], look: [-0.2, 0.55, -1.3] },
   },
 };
 
