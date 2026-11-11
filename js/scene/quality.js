@@ -21,13 +21,8 @@ export function detect() {
   if (q.get('motion') === 'reduce') return { tier: 'poster', reason: '?motion=reduce', ...info };
   if (conn.saveData) return { tier: 'poster', reason: 'uključena ušteda podataka', ...info };
   if (/(^|-)2g$/.test(conn.effectiveType || '') || conn.effectiveType === '3g') return { tier: 'poster', reason: 'spora mreža', ...info };
-  if (mobile) {
-    if ((mem && mem <= 2) || cores <= 2) return { tier: 'poster', reason: 'slab telefon (memorija/jezgra)', ...info };
-    return { tier: 'low', reason: 'mobilni — konzervativan početak', ...info };
-  }
-  if ((mem && mem <= 2) || cores <= 2) return { tier: 'low', reason: 'slab računar', ...info };
-  if ((mem || 4) >= 8 && cores >= 8) return { tier: 'high', reason: 'jak računar', ...info };
-  return { tier: 'mid', reason: 'računar — standardno', ...info };
+  // Privremeno: svi uređaji počinju na high (runtime monitor i dalje spušta rezoluciju/senke/poster ako uređaj ne stiže).
+  return { tier: 'high', reason: 'svi uređaji na high (privremeno)', ...info };
 }
 
 /** softverski renderer (SwiftShader, llvmpipe…) nije upotrebljiv za 3D */

@@ -19,7 +19,7 @@ Skup render-petlji/konteksta: 1 petlja i 1 kontekst (nije curilo); petlja je sta
 ## Šta je izmenjeno
 - **Poster prvo:** 7 renderovanih kadara iste scene (landscape + portret, ukupno ≈1,2 MB; prvi 17–52 KB) prikazuju se odmah i prate skrol (cross-fade). Stranica, navigacija i sadržaj su dostupni bez čekanja na 3D.
 - **3D se učitava naknadno:** tek posle `load` + `requestIdleCallback`, nikad u skrivenom tabu, sa statusom „3D scena se učitava…". Parsiranje je podeljeno u male korake (`scheduler.yield`), bez blokiranja skrola i klikova; canvas ne prima dodire (`pointer-events:none`).
-- **Nivoi** (`js/scene/quality.js`): vidi tabelu. Početni nivo je konzervativan; stvarno stanje određuju merenja (probni kadar + trajanje kadrova tokom skrola). Nivo se samo spušta (bez ping-ponga).
+- **Nivoi** (`js/scene/quality.js`): vidi tabelu. Trenutno svi uređaji počinju na high (privremena odluka); stvarno stanje određuju merenja (probni kadar + trajanje kadrova tokom skrola). Nivo se samo spušta (bez ping-ponga).
 - **Tri modela** (gltfpack): high 654 k trouglova / 2048 tekstura / 13,6 MB · mid 267 k / 1024 / 8,2 MB · low 80 k / 512 / 2,4 MB.
 - **Senke:** isključene na low; na mid 1024 i osvežavanje na svaki 2. kadar; na high 2048. Jeftiniji PCF filter.
 - **Svetla:** high 8, mid 4, low 2. **Fade** (alphaHash, kloniranje materijala) samo na high; mid/low dele originalne materijale (267 → 82–96).
